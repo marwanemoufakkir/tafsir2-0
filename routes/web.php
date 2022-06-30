@@ -14,15 +14,9 @@ use App\Http\Controllers\ClientController;
 */
 
 Route::get('/search', function () {
-    return view('welcome');
+    return view('search');
 });
 
-Route::prefix('api')->group(function ()
-{
-//    Route::get('fetch-ayah', [ClientController::class, 'fetchAyah']);
-   Route::post('fetch-topic', [ClientController::class, 'fetchTopic']);
-
-});
 Route::get('/ayah/{id}', [ClientController::class, 'fetchAyah']);
 
 Route::get('/result', [ClientController::class, 'elasticsearchQueries']);

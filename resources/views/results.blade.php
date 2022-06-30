@@ -172,13 +172,13 @@
                                                 <label class="fs-6 form-label fw-bolder text-dark mb-5">نوع Type</label>
                                                 <!--begin::Checkbox-->
                                                 <div class="form-check form-check-custom form-check-solid mb-5">
-                                                    <input class="form-check-input" type="checkbox" name="filter[type][]" />
+                                                    <input class="form-check-input" type="checkbox" value="hadith" name="filter[type][]" />
                                                     <label class="form-check-label flex-grow-1 fw-bold text-gray-700 fs-6" for="type">Hadith</label>
                                                 </div>
                                                 <!--end::Checkbox-->
                                                 <!--begin::Checkbox-->
                                                 <div class="form-check form-check-custom form-check-solid mb-5">
-                                                    <input class="form-check-input" type="checkbox" name="filter[type][]"  />
+                                                    <input class="form-check-input" type="checkbox" value="nothadith" name="filter[type][]"  />
                                                     <label class="form-check-label flex-grow-1 fw-bold text-gray-700 fs-6" for="type">Nohadith</label>
 
                                                 </div>
@@ -235,43 +235,14 @@
                                    @foreach ($result as $item)
                                        									
 									<div class="mb-0">
-										<!--begin::Head-->
 										<div class="d-flex align-items-center mb-4">
-																		<!--begin::Icons-->
-																		<div class="d-flex align-items-center">
-																			<span class="ms-1">
-																		<!--begin::Svg Icon | path: assets/media/icons/duotune/general/gen022.svg-->
-																		<span class="svg-icon svg-icon-warning svg-icon-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-																			<path d="M11.2929 2.70711C11.6834 2.31658 12.3166 2.31658 12.7071 2.70711L15.2929 5.29289C15.6834 5.68342 15.6834 6.31658 15.2929 6.70711L12.7071 9.29289C12.3166 9.68342 11.6834 9.68342 11.2929 9.29289L8.70711 6.70711C8.31658 6.31658 8.31658 5.68342 8.70711 5.29289L11.2929 2.70711Z" fill="currentColor"/>
-																			<path d="M11.2929 14.7071C11.6834 14.3166 12.3166 14.3166 12.7071 14.7071L15.2929 17.2929C15.6834 17.6834 15.6834 18.3166 15.2929 18.7071L12.7071 21.2929C12.3166 21.6834 11.6834 21.6834 11.2929 21.2929L8.70711 18.7071C8.31658 18.3166 8.31658 17.6834 8.70711 17.2929L11.2929 14.7071Z" fill="currentColor"/>
-																			<path opacity="0.3" d="M5.29289 8.70711C5.68342 8.31658 6.31658 8.31658 6.70711 8.70711L9.29289 11.2929C9.68342 11.6834 9.68342 12.3166 9.29289 12.7071L6.70711 15.2929C6.31658 15.6834 5.68342 15.6834 5.29289 15.2929L2.70711 12.7071C2.31658 12.3166 2.31658 11.6834 2.70711 11.2929L5.29289 8.70711Z" fill="currentColor"/>
-																			<path opacity="0.3" d="M17.2929 8.70711C17.6834 8.31658 18.3166 8.31658 18.7071 8.70711L21.2929 11.2929C21.6834 11.6834 21.6834 12.3166 21.2929 12.7071L18.7071 15.2929C18.3166 15.6834 17.6834 15.6834 17.2929 15.2929L14.7071 12.7071C14.3166 12.3166 14.3166 11.6834 14.7071 11.2929L17.2929 8.70711Z" fill="currentColor"/>
-																			</svg>
-																		</span>
-																			<!--end::Svg Icon-->
-																				
-																			</span>
-																		</div>
-																		<!--end::Icons-->
+
 											<!--begin::Title-->
-											<span class="fs-2 fw-bolder text-gray-900 text-hover-primary me-1"> {{$item['_source']['ayahTitle']}} </span>
+											<span class="fs-1 fw-bolder text-gray-900 text-hover-primary me-1">﴿ {{$item['_source']['ayahTitle']}}  ﴾</span>
 											<!--end::Title-->
-											<!--begin::Icons-->
-											<div class="d-flex align-items-center">
-												<span class="ms-1">
-											<!--begin::Svg Icon | path: assets/media/icons/duotune/general/gen022.svg-->
-											<span class="svg-icon svg-icon-warning svg-icon-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-												<path d="M11.2929 2.70711C11.6834 2.31658 12.3166 2.31658 12.7071 2.70711L15.2929 5.29289C15.6834 5.68342 15.6834 6.31658 15.2929 6.70711L12.7071 9.29289C12.3166 9.68342 11.6834 9.68342 11.2929 9.29289L8.70711 6.70711C8.31658 6.31658 8.31658 5.68342 8.70711 5.29289L11.2929 2.70711Z" fill="currentColor"/>
-												<path d="M11.2929 14.7071C11.6834 14.3166 12.3166 14.3166 12.7071 14.7071L15.2929 17.2929C15.6834 17.6834 15.6834 18.3166 15.2929 18.7071L12.7071 21.2929C12.3166 21.6834 11.6834 21.6834 11.2929 21.2929L8.70711 18.7071C8.31658 18.3166 8.31658 17.6834 8.70711 17.2929L11.2929 14.7071Z" fill="currentColor"/>
-												<path opacity="0.3" d="M5.29289 8.70711C5.68342 8.31658 6.31658 8.31658 6.70711 8.70711L9.29289 11.2929C9.68342 11.6834 9.68342 12.3166 9.29289 12.7071L6.70711 15.2929C6.31658 15.6834 5.68342 15.6834 5.29289 15.2929L2.70711 12.7071C2.31658 12.3166 2.31658 11.6834 2.70711 11.2929L5.29289 8.70711Z" fill="currentColor"/>
-												<path opacity="0.3" d="M17.2929 8.70711C17.6834 8.31658 18.3166 8.31658 18.7071 8.70711L21.2929 11.2929C21.6834 11.6834 21.6834 12.3166 21.2929 12.7071L18.7071 15.2929C18.3166 15.6834 17.6834 15.6834 17.2929 15.2929L14.7071 12.7071C14.3166 12.3166 14.3166 11.6834 14.7071 11.2929L17.2929 8.70711Z" fill="currentColor"/>
-												</svg>
-											</span>
-												<!--end::Svg Icon-->
-													
-												</span>
-											</div>
-											<!--end::Icons-->
+                                            @php $chapter=\App\Models\Surah::find($item['_source']['chapter'])->first(); @endphp 				
+                                            @if ($chapter)<span class="fs-4 fw-bolder text-muted text-hover-primary me-1"> [{{ $chapter['title'] }} -  {{ explode('.',$item['_source']['ayah'])[1] }}]   </span> @endif
+                                            
 										</div>
 										<!--end::Head-->
 										<!--begin::Summary-->
@@ -310,28 +281,7 @@
 										<div class="d-flex flex-stack flex-wrap">
 											<!--begin::Author-->
 											<div class="d-flex align-items-center py-1">
-												<!--begin::Symbol-->
-												<div class="symbol symbol-35px me-2">
-													
-													<div class="symbol-label bg-light-success fs-3 fw-bold text-success text-uppercase">
-														{{ $item['_source']['ayah'] }} 
-													</div>
-												</div>
-												<!--end::Symbol-->
-												<!--begin::Name-->
-												<div class="d-flex flex-column align-items-start justify-content-center">
-													
-												@php $chapter=\App\Models\Surah::find($item['_source']['chapter'])->first(); @endphp 				
-												@if ($chapter)
-												<span class="text-gray-900 fs-7 fw-bold lh-1 mb-2">{{ $chapter['title'] }}</span>
-												<span class="text-muted fs-6 fw-bold lh-1">
-													{{ $chapter['transliteration'] }}
-											
-												@endif
-												
-											</span>	
-												</div>
-												<!--end::Name-->
+				
 
 											</div>
 											<!--end::Author-->
@@ -341,7 +291,7 @@
 													{{ $item['_source']['type'] }} 
 												</span>
 												<!--begin::Tags-->
-												<a href="{{ "ayah/1" }}" class="btn btn-sm btn-light px-4 me-2">تصفح
+												<a href="ayah/{{$item['_id']}}" class="btn btn-sm btn-light px-4 me-2">تصفح
                                                     <span class="svg-icon svg-icon-7ms-2 me-0">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                                             <path opacity="0.5" d="M13 9.59998V21C13 21.6 12.6 22 12 22C11.4 22 11 21.6 11 21V9.59998H13Z" fill="currentColor"></path>

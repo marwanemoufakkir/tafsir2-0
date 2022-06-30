@@ -30,14 +30,25 @@ class ClientController extends Controller
 
     }
     public function elasticsearchQueries(Request $request){
-     
+        // dd($request->kt_docs_repeater_advanced);
+        // $validator = Validator::make($request->kt_docs_repeater_advanced, [
+        //     '*.paraghraphe.text' => 'required',
+        // ], $messages = [
+        //     'required' => 'أدخل كلمات البحث.',
+        // ]);
+
+        // if ($validator->fails()) {
+        //     return redirect()->back()
+        //         ->withErrors($validator);
+        // }
         $items=$this->searchOnElasticsearch($request);
         return view('results')->with('result',$this->buildCollection($items))->with('count',$this->getTotal($items));
     }
     public function fetchAyah(Request $request)
     {
         $items = $this->findAyahXML($request->id);
-        return view('ayah')->with('result',$this->buildCollection($items))
+        // dd($items);
+        return view('ayah')->with('result',$items['_source']);
     }
 
     private function findAyahXML(string $query = ''): array
@@ -48,44 +59,15 @@ class ClientController extends Controller
         ];
         
         $items = $this->elasticsearch->get($params);
+
         return $items;
     }
-    public function fetchTopic(Request $request)
-    {
 
-        $items = $this->findTopic($request->ayah_id);
-        return response()->json($this->buildCollection($items), 200, [], JSON_UNESCAPED_UNICODE);
-    }
-
-    private function findTopic(string $query = ''): array
-    {
-        $params = [
-            'index' => 'my-tafsir',
-            'body' => [
-                'query' => [
-                    'match' => [
-                        'ayah.ayahNumber' => $query,
-                    ],
-                ],
-            ],
-        ];
-        $items = $this->elasticsearch->search($params);
-        return $items;
-    }
 
     private function searchOnElasticsearch(Request $request)
     {
         
-        // $validator = Validator::make($request->all(), [
-        //     'kt_docs_repeater_advanced.*.paraghraphe.text' => 'required',
-        // ], $messages = [
-        //     'required' => 'أدخل كلمات البحث.',
-        // ]);
 
-        // if ($validator->fails()) {
-        //     return redirect()->back()
-        //         ->withErrors($validator);
-        // }
 
         $requestParams = $request->kt_docs_repeater_advanced;
 
@@ -93,7 +75,7 @@ class ClientController extends Controller
 
         foreach ($requestParams as $key => $param) {
             $boolQuery = new BoolQuery();
-            $nestedBoolQuery = new BoolQuery();
+
             $param=array_filter($param);
             $searchType=$param['search_type'];
             if(isset($param['type'])){
@@ -162,13 +144,39 @@ class ClientController extends Controller
             
         }
         $requestFilter = $request->filter;
+
         if(isset($requestFilter)){
             foreach ($requestFilter as $key => $value) {
             
                 if( $key === 'surah'){
                     foreach ($value as $key => $term) {
                         $filter = new TermQuery('chapter',  $term);
-                        $boolQuery->add($filter, BoolQuery::FILTER);
+                        $search->addQuery($filter, BoolQuery::FILTER);
+                        
+                    }
+    
+                }
+                if( $key === 'type'){
+                    foreach ($value as $key => $term) {
+                        $filter = new TermQuery('type',  $term);
+                        $search->addQuery($filter, BoolQuery::FILTER);
+                        
+                    }
+    
+                }
+                if( $key === 'topic'){
+                    foreach ($value as $key => $term) {
+                        $filter = new TermQuery('topic',  $term);
+                        $search->addQuery($filter, BoolQuery::FILTER);
+                        
+                    }
+    
+                }
+                if( $key === 'subtopic'){
+                    foreach ($value as $key => $term) {
+                        $filter = new TermQuery('subtopic',  $term);
+                        $search->addQuery($filter, BoolQuery::FILTER);
+                        
                     }
     
                 }
@@ -186,10 +194,12 @@ class ClientController extends Controller
         $search->addHighlight($higlight);
         $searchParams = [
             'index' => 'my-tafsir',
+            'from'=>0,
+            'size'=>100,
             'body' => $search->toArray(),
         ];
         $items = $this->elasticsearch->search($searchParams);
-       
+    //    dd(json_encode($searchParams));
          return $items;
     
         
@@ -207,54 +217,3 @@ class ClientController extends Controller
 }
 
 
-// public function setFragmentSize($fragmentSize)
-// {
-//     $this->fragmentSize = $fragmentSize;
-
-//     return $this;
-// }
-
-// /**
-//  * Sets maximum number of fragments to return.
-//  *
-//  * @param int $numberOfFragments
-//  *
-//  * @return Field
-//  */
-// public function setNumberOfFragments($numberOfFragments)
-// {
-//     $this->numberOfFragments = $numberOfFragments;
-
-//     return $this;
-// }
-
-
-// /**
-//  * {@inheritdoc}
-//  */
-// public function getType()
-// {
-//     return 'highlight';
-// }
-
-// /**
-//  * {@inheritdoc}
-//  */
-// public function toArray()
-// {
-//     $output = [];
-
-//     if (is_array($this->tags)) {
-//         $output = $this->tags;
-//     }
-//     $output['fragment_size']= $this->fragmentSize;
-//     $output['number_of_fragments']=  $this->numberOfFragments;
-//     $output = $this->processArray($output);
-
-//     foreach ($this->fields as $field => $params) {
-//         $output['fields'][$field] = count($params) ? $params : new \stdClass();
-//     }
-
-//     return $output;
-// }
-// }

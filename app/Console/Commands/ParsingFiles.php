@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Tafsir;
 use Elasticsearch\Client;
-// ini_set('memory_limit', '50M');
+
 $old = ini_set('memory_limit', '8192M');
 
 class ParsingFiles extends Command
@@ -50,7 +50,7 @@ class ParsingFiles extends Command
     public function handle()
     {
         $params = ['index' => 'my-tafsir'];
-          $response = $this->elasticsearch->indices()->delete($params);
+        // $response = $this->elasticsearch->indices()->delete($params);
         $params = [
             'index' => 'my-tafsir',
             'body' => [
@@ -82,7 +82,23 @@ class ParsingFiles extends Command
                     "arabic_stemmer"=>[
                       "type"=>"stemmer",
                       "language"=>"arabic"
-                    ]
+                    ],
+                    "quran_arabic_word_synonym"=>[
+                    "type"=> "synonym",
+                   "expand"=> "true",
+                   "synonyms_path"=> "analysis/quran_arabic_word_synonym.txt"
+                    ],
+                  "noun_synonym"=>[
+                   "type"=> "synonym",
+                    "expand"=>"true",
+                    "synonyms_path"=> "analysis/noun_synonym.txt"
+                  ],
+                  "shingle_filter"=>[
+                    "type"=> "shingle",
+                   "min_shingle_size"=> 2,
+                    "max_shingle_size"=> 2,
+                    "output_unigrams"=> false
+                  ]
                   ],
                   "analyzer"=>[
                     "autocomplete_arabic"=>[
@@ -112,6 +128,8 @@ class ParsingFiles extends Command
                         "arabic_normalization",
                         "arabic_stemmer",
                         "arabic_stop",
+                        "quran_arabic_word_synonym",
+                        "noun_synonym",
                         "icu_folding"
                       ]
                     ]
@@ -161,75 +179,13 @@ class ParsingFiles extends Command
                     ],
                 ]
               ]
-//   "mappings"=>[
-//     "properties"=>[
-//       "ayah"=>[
-//         "type"=>"object",
-//         "properties"=>[
-//           "chapterNumber"=>[
-//             "type"=>"keyword"
-//           ],
-//           "ayahNumber"=>[
-//             "type"=>"keyword"
-//           ],
-//           "ayahTitle"=>[
-//             "type"=>"text",
-//             "analyzer"=>"autocomplete_arabic"
-//           ]
-//         ]
-//       ],
-//       "content"=>[
-//         "type"=>"text",
-//         "analyzer"=>"arabic_synonym_normalized"
-//       ],
-//       "paraghraphe"=>[
-//         "type"=>"nested",
-//         "properties"=>[
-//           "text"=>[
-//             "type"=>"text",
-//               "fields"=>[
-//                 "rebuilt_arabic"=>[
-//                   "type"=>"text",
-//                   "analyzer"=>"rebuilt_arabic"
-//                 ],
-//                 "arabic_synonym_normalized"=>[
-//                   "type"=>"text",
-//                   "analyzer"=>"arabic_synonym_normalized"
-//                 ],
-//                 "autocomplete_arabic"=>[
-//                   "type"=>"text",
-//                   "analyzer"=>"autocomplete_arabic"
-//                 ]
-//               ]
-//           ],
-//           "type"=>[
-//             "type"=>"text"
-//           ],
-//           "topic"=>[
-//             "type"=>"text"
-//           ],
-//           "subtopic"=>[
-//             "type"=>"nested",
-//             "properties"=>[
-//               "text"=>[
-//                 "type"=>"text"
-//               ],
-//               "subtopics"=>[
-//                 "type"=>"text"
-//               ]
-//             ]
-//           ]
-//         ]
-//       ]
-//     ]
-//   ]
-
-            ]
+              ]
+            
         ];
 
 
         // Create the index with mappings and settings now
-        $response = $this->elasticsearch->indices()->create($params);
+        // $response = $this->elasticsearch->indices()->create($params);
         $this->info('Indexing all sections. This might take a while...');
         
         foreach ($this->getText() as $key => $value) {
@@ -344,7 +300,7 @@ class ParsingFiles extends Command
                 // }
 
 
-                $json = preg_replace('/(\s+)?\\\t(\s+)?/', ' ', json_encode($sections[0], JSON_UNESCAPED_UNICODE));
+                $json = preg_replace('/(\s+)?\\\t(\s+)?/', ' ', json_encode($sections[3], JSON_UNESCAPED_UNICODE));
                 $json = preg_replace('/(\s+)?\\\n(\s+)?/', ' ',$json);
                 
             }
